@@ -16,6 +16,18 @@ public class ProductRepository {
     private EntityManager em;
 
     @Transactional
+    public void update(String name, int price, int qty,int id) {
+        Query query = em.createNativeQuery("update product_tb set name = :name, price = :price, qty = :qty where id= :id");
+        query.setParameter("name",name);
+        query.setParameter("price",price);
+        query.setParameter("qty",qty);
+        query.setParameter("id",id);
+        query.executeUpdate();
+
+
+    }
+
+    @Transactional
     public void save(String name, int price, int qty) {
         Query query = em.createNativeQuery("insert into product_tb(name, price, qty) values(:name, :price, :qty)");
         query.setParameter("name", name);
@@ -37,6 +49,14 @@ public class ProductRepository {
         Product product = (Product) query.getSingleResult();
         return product;
     }
+
+    @Transactional //insert update delete는 트랜잭션
+    public void deleteById(int id) {
+        Query query = em.createNativeQuery("delete from product_tb where id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
+    }
+
 
 //    public Product findById2(int id) {
 //        Query query = em.createNativeQuery("select * from product_tb where id = :id");
