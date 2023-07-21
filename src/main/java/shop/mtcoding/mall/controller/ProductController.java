@@ -18,24 +18,23 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    private ProductRepository productRepository;
+    private ProductRepository productRepository; //ProductRepository를 new한것임
 
-    @PostMapping("/product/update")
+    @PostMapping("/product/update") //executeUpdate가 있으니 PostMapping사용
     public String update(String name, int price, int qty,int id) {
         productRepository.update(name, price, qty,id);
-//       response.sendRedirect("/");
-        return "redirect:/";
+        return "redirect:/"; //update후 돌아갈 주소 redirect:주소
     }
 
-    @PostMapping("/product/delete")
+    @PostMapping("/product/delete") //또한 deleteById를 가보면 executeUpdate가 있다 그러니 PostMapping
     public String delete(int id) {
         productRepository.deleteById(id);
         return "redirect:/";
     }
 
     @GetMapping("/product/{id}")
-    public String detail(@PathVariable int id, HttpServletRequest request) {
-        System.out.println("id: " + id);
+    public String detail(@PathVariable int id, HttpServletRequest request) { //@PathVariable는 주소창에서 id를 추출할때 사용
+//        System.out.println("id: " + id);
         Product product = productRepository.findById(id);
         request.setAttribute("p", product);
         System.out.println(product.getId());
